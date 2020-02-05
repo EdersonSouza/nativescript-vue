@@ -2,7 +2,7 @@
     <Page class="page">
         <ActionBar class="action-bar" title="Product"></ActionBar>
         <GridLayout>
-            <ListView for="p in product" class="list-group">
+            <ListView for="p in products" class="list-group">
                 <v-template>
                     <StackLayout class="list-group-item">
                         <Label :text="p.title" />
@@ -14,19 +14,21 @@
 </template>
 
 <script>
-    import * as http from "http";
+    import axios from "axios";
     export default {
         data() {
             return {
-                product: []
+               
+                products:new Object()
             };
         },
-        mounted() { 
-          http.getJSON("https://localhost:3000/products").then(result => {
-            this.product = result.results;
+        created() { 
+            axios({ method: "GET", "url": "http://192.168.1.3:3000/products" }).then(result => {
+                 this.products = result.data;
             }, error => {
-              console.log(error);
+                console.error(error);
             });
+          
         }
     };
 </script>
